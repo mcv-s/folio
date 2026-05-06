@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>New Tab</title>
+
+<link id="favicon" rel="icon" href="light.png">
+<link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+
+<canvas id="c"></canvas>
+
+
+<!-- WIDGET LAYER -->
+<div id="widgetLayer"></div>
+
+
+
+<div class="center-ui">
+
+  <div class="stack">
+
+    <!-- SEARCH BAR -->
+    <div class="search-bar">
+      <textarea id="aiInput" rows="1" placeholder="Ask anything..."></textarea>
+
+      <div class="send">
+        <svg viewBox="0 0 24 24">
+          <path d="M10 17l5-5-5-5v10z"/>
+        </svg>
+      </div>
+    </div>
+
+    <!-- AI SELECTOR BUBBLE -->
+  <div class="ai-bubble" id="aiBubble">
+
+    <div class="ai-selected" id="aiSelected">
+      ChatGPT
+      <span class="chev">▾</span>
+    </div>
+
+    <div class="ai-menu" id="aiMenu">
+      <div class="ai-option active" data-value="chatgpt">ChatGPT</div>
+      <div class="ai-option" data-value="claude">Claude</div>
+      <div class="ai-option" data-value="grok">Grok</div>
+      <div class="ai-option" data-value="perplexity">Perplexity</div>
+      <div class="ai-option" data-value="mistral">Mistral</div>
+      <div class="ai-option" data-value="copilot">Bing Copilot</div>
+    </div>
+
+  </div>
+
+</div>
+
+<script src="newtab.js"></script>
+<script src="widgets.js"></script>
+
+</body>
+</html>

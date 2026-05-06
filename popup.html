@@ -1,0 +1,439 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Folio</title>
+
+<style>
+  :root {
+    --bg: #1e1e1e;
+    --card: #2a2a2a;
+    --text: #ffffff;
+    --muted: #a0a0a0;
+    --accent: #4f9cff;
+  }
+
+  body.light {
+    --bg: #f6f6f6;
+    --card: #ffffff;
+    --text: #111111;
+    --muted: #666;
+    --accent: #2563eb;
+  }
+
+  body {
+    margin: 0;
+    font-family: system-ui, sans-serif;
+    width: 320px;
+    padding: 12px;
+    background: var(--bg);
+    color: var(--text);
+    transition: 0.2s ease;
+  }
+
+  .card {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  .title {
+    font-size: 13px;
+    font-weight: 700;
+    margin-bottom: 8px;
+    color: var(--muted);
+  }
+
+  textarea {
+    width: 100%;
+    height: 90px;
+    resize: none;
+    border-radius: 10px;
+    border: none;
+    outline: none;
+    padding: 10px;
+    background: rgba(0,0,0,0.2);
+    color: var(--text);
+    font-size: 12px;
+    box-sizing: border-box;
+  }
+
+  button {
+    width: 100%;
+    margin-top: 8px;
+    padding: 8px;
+    border-radius: 10px;
+    border: none;
+    background: var(--accent);
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+  }
+
+  .hint {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 6px;
+  }
+
+
+  .info {
+    font-size: 10px;
+    opacity: 0.3;
+    margin-top: 6px;
+  }
+
+  .row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 12px;
+    margin: 6px 0;
+  }
+
+  .switch {
+    position: relative;
+    width: 38px;
+    height: 22px;
+  }
+
+  .switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+  }
+
+  .slider {
+    position: absolute;
+    cursor: pointer;
+    inset: 0;
+    background-color: #555;
+    transition: .2s;
+    border-radius: 999px;
+  }
+
+  .slider:before {
+    position: absolute;
+    content: "";
+    height: 16px;
+    width: 16px;
+    left: 3px;
+    top: 3px;
+    background-color: white;
+    transition: .2s;
+    border-radius: 50%;
+  }
+
+  input:checked + .slider {
+    background-color: var(--accent);
+  }
+
+  input:checked + .slider:before {
+    transform: translateX(16px);
+  }
+
+  /* Advanced dropdown */
+  details {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 10px;
+    margin-bottom: 10px;
+  }
+
+  summary {
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--accent);
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  /* NEW: Upload button styling */
+.upload-btn {
+  display: inline-flex;
+  width: calc(100%); /* respects card padding visually */
+  margin: 0 auto 10px auto;
+  padding: 10px;
+  border-radius: 10px;
+  background: rgba(79, 156, 255, 0.15);
+  border: 1px solid rgba(79, 156, 255, 0.4);
+  color: var(--text);
+  font-size: 12px;
+  font-weight: 600;
+  text-align: center;
+  cursor: pointer;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+  .upload-btn input {
+    display: none;
+  }
+
+  .mini {
+    font-size: 11px;
+    opacity: 0.7;
+    margin-top: 6px;
+  }
+
+
+
+
+
+
+
+a,
+a:visited,
+a:hover,
+a:active {
+  color: inherit;
+}
+
+
+
+
+
+
+
+
+
+
+</style>
+</head>
+
+<body>
+
+
+
+
+
+<!-- BACKGROUND (NOW ITS OWN SECTION) -->
+<div class="card">
+  <div class="title">Background</div>
+
+  <label class="upload-btn">
+    Upload Image
+    <input type="file" id="bgUpload" accept="image/*">
+  </label>
+
+
+
+
+  <br><br>
+  <div class="row">
+    <span>Enable Background Image</span>
+    <label class="switch">
+      <input type="checkbox" id="bgToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+
+
+  <div class="row">
+    <span>Randomize Background Image?</span>
+    <label class="switch">
+      <input type="checkbox" id="toggleRandom">
+      <span class="slider"></span>
+    </label>
+  </div>
+  <div class="info">Random images from https://picsum.photos/1920/1080</div>
+  
+  <br>
+
+  <div style="margin-top:10px;">
+    <div class="title">Blur Strength</div>
+
+    <input type="range" id="blurSlider" min="0" max="20" value="0" step="1" style="width:100%;">
+
+    <div class="hint">Controls background blur (0–20px)</div>
+  </div>
+
+
+
+</div>
+
+<!-- BEHAVIOR -->
+<div class="card">
+  <div class="title">Behavior</div>
+
+  <div class="row">
+    <span>Enter to submit</span>
+    <label class="switch">
+      <input type="checkbox" id="enterToggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div class="row">
+    <span>Show AI Search Bar</span>
+    <label class="switch">
+      <input type="checkbox" id="searchBarToggle" checked>
+      <span class="slider"></span>
+    </label>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- REDIRECT -->
+<div class="card">
+  <div class="title">Redirect</div>
+
+  <div class="row">
+    <span>Enable Redirect on New Tab</span>
+    <label class="switch">
+      <input type="checkbox" id="redirectToggle">
+      <span class="slider"></span>
+    </label>
+  </div>
+
+  <div style="margin-top:10px;">
+    <div class="title">Redirect URL</div>
+
+    <input
+      type="text"
+      id="redirectUrl"
+      placeholder="https://example.com"
+      style="
+        width: 100%;
+        padding: 10px;
+        border-radius: 10px;
+        border: none;
+        outline: none;
+        background: rgba(0,0,0,0.2);
+        color: var(--text);
+        font-size: 12px;
+        box-sizing: border-box;
+      "
+    />
+
+    <div class="hint">Opens this page immediately on new tab</div>
+  </div>
+</div>
+
+
+
+
+
+
+
+
+<!-- INTEGRATIONS -->
+<details>
+  <summary>Integrations</summary>
+  <div class="info">Folio does not collect your data.</div>
+  <div class="info">By using Folio, you agree to our privacy policy. <a href="https://example.com" class="info" style="opacity: 1; ">Learn more.</a></div>
+
+
+  <div style="margin-top:12px;">
+
+    <br>
+    <div class="title">Todoist</div>
+      <div class="row">
+        <span>Enable todoist widget</span>
+        <label class="switch">
+          <input type="checkbox" id="todoistEnabled" unchecked>
+          <span class="slider"></span>
+        </label>
+      </div>
+      <input
+        type="text"
+        id="todoistLink"
+        placeholder="Todoist ics link"
+        style="
+          width: 100%;
+          padding: 10px;
+          border-radius: 10px;
+          border: none;
+          outline: none;
+          background: rgba(0,0,0,0.2);
+          color: var(--text);
+          font-size: 12px;
+          box-sizing: border-box;
+        "
+      />
+
+
+      <br><br><br>
+      <div class="title">Weather</div>
+        <div class="row">
+          <span>Enable weather widget</span>
+          <label class="switch">
+            <input type="checkbox" id="weatherEnabled" unchecked>
+            <span class="slider"></span>
+          </label>
+        </div>
+    </div>
+
+      <div class="info">Weather data from api.open-meteo.com. Data may be innacurate if your ip is hidden.</div>
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- ADVANCED (CSS ONLY NOW) -->
+<details>
+  <summary>Advanced</summary>
+
+  <div style="margin-top:12px;">
+    <div class="title">Custom CSS</div>
+
+    <textarea id="cssBox" placeholder="Write custom CSS for your new tab..." style="min-height: 180px;"></textarea>
+
+    <button id="saveCss">Save CSS</button>
+
+    <div class="hint">Applied automatically on new tab</div>
+  </div>
+
+</details>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<div class="hint">Changes take place upon refresh or new tab visit.</div>
+
+<div class="hint">By using Folio, or its integrations, you take on full responsibility for any data shared with Folio or its partners.</div>
+
+
+<script src="popup.js"></script>
+
+</body>
+</html>
