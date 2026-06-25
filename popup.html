@@ -184,6 +184,9 @@
   }
 
 
+  .row:has(#enterToggle) {
+    display: none;
+  }
 
 
 
@@ -214,7 +217,7 @@ a:active {
 
 
 
-<!-- BACKGROUND (NOW ITS OWN SECTION) -->
+<!-- BACKGROUND -->
 <div class="card">
   <div class="title">Background</div>
 
@@ -279,6 +282,18 @@ a:active {
       <span class="slider"></span>
     </label>
   </div>
+
+  <div class="row">
+    <span>Show Site History</span>
+    <label class="switch">
+      <input type="checkbox" id="showHistory" unchecked>
+      <span class="slider"></span>
+    </label>
+  </div>
+
+
+
+
 </div>
 
 

@@ -3,6 +3,10 @@ const ENTER_KEY = "enterLaunch";
 const SEARCH_BAR_KEY = "showSearchBar";
 const REDIRECT_ENABLED_KEY = "redirectEnabled";
 const REDIRECT_URL_KEY = "redirectUrl";
+const SHOW_HISTORY_KEY = "showHistory";
+
+
+
 
 // ===== ENTER TO SUBMIT =====
 const enterToggle = document.getElementById("enterToggle");
@@ -11,6 +15,10 @@ enterToggle.checked = localStorage.getItem(ENTER_KEY) !== "false";
 enterToggle.addEventListener("change", e => {
   localStorage.setItem(ENTER_KEY, e.target.checked);
 });
+
+
+
+
 
 // ===== SHOW SEARCH BAR =====
 const searchBarToggle = document.getElementById("searchBarToggle");
@@ -61,6 +69,24 @@ document.getElementById("saveCss").addEventListener("click", () => {
 
 
 
+// ===== SHOW HISTORY =====
+const showHistoryToggle = document.getElementById("showHistory");
+
+// restore state (default = false)
+chrome.storage.local.get(SHOW_HISTORY_KEY, (data) => {
+  showHistoryToggle.checked = data[SHOW_HISTORY_KEY] === true;
+});
+
+// save on change
+showHistoryToggle.addEventListener("change", (e) => {
+  chrome.storage.local.set({
+    [SHOW_HISTORY_KEY]: e.target.checked
+  });
+});
+
+
+
+
 
 
 
@@ -79,7 +105,6 @@ document.getElementById("saveCss").addEventListener("click", () => {
 
 
 // Image enabled storage
-
 
 const BG_ENABLED_KEY = "bgEnabled";
 const bgToggle = document.getElementById("bgToggle");

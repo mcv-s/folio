@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>Folio Privacy Policy</title>
+
+<style>
+  :root {
+    --bg: #ffffff;
+    --text: #111111;
+    --muted: #666;
+    --card: #f2f2f2;
+    --border: #e0e0e0;
+    --accent: #4f9cff;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg: #0f0f0f;
+      --text: #f5f5f5;
+      --muted: #aaaaaa;
+      --card: #1b1b1b;
+      --border: #2a2a2a;
+      --accent: #7aa2ff;
+    }
+  }
+
+  body {
+    margin: 0;
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.6;
+  }
+
+  .container {
+    max-width: 850px;
+    margin: 0 auto;
+    padding: 40px 20px;
+  }
+
+  h1 {
+    margin-bottom: 4px;
+  }
+
+  .subtitle {
+    color: var(--muted);
+    margin-bottom: 30px;
+  }
+
+  h2 {
+    margin-top: 30px;
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 6px;
+  }
+
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 14px;
+    margin: 12px 0;
+  }
+
+  ul {
+    margin: 8px 0 0 20px;
+  }
+
+  a {
+    color: var(--accent);
+  }
+</style>
+</head>
+
+<body>
+<div class="container">
+
+<h1>Folio Privacy Policy</h1>
+<div class="subtitle">Last updated: June 25, 2026</div>
+
+<h2>Overview</h2>
+<div class="card">
+Folio is a browser extension that replaces the new tab page with a customizable interface including widgets, AI search shortcuts, background customization, and optional integrations.
+
+<br><br>
+Folio is designed to operate locally inside your browser.
+</div>
+
+<h2>Data Collection</h2>
+<div class="card">
+Folio does <b>not collect, transmit, sell, or store personal data on external servers</b>. <br><br>
+
+All user data remains on your device using Chromium's local storage APIs. No data is shared except to certain third parties for integration purposes.
+</div>
+
+<h2>Data Stored Locally</h2>
+<div class="card">
+Folio may store the following data locally in your browser:
+
+<ul>
+  <li>Custom CSS for the new tab page</li>
+  <li>Background image settings and uploads</li>
+  <li>Widget settings and layout positions</li>
+  <li>AI provider selection (ChatGPT, Claude, Grok, etc.)</li>
+  <li>Feature toggles (history, search bar, redirect, etc.)</li>
+  <li>Integration settings (Todoist, Weather)</li>
+</ul>
+
+This data never leaves your device.
+</div>
+
+<h2>Permissions</h2>
+
+<div class="card">
+<b>Storage</b><br>
+Used to save settings locally on your device.
+</div>
+
+<div class="card">
+<b>History</b><br>
+Used only to display your recent browsing history in the new tab page.
+</div>
+
+<div class="card">
+<b>Tabs</b><br>
+Used to open pages or AI search results when triggered by you.
+</div>
+
+<div class="card">
+<b>Active Tab</b><br>
+Used only when interacting with the current tab via user-initiated actions.
+</div>
+
+<div class="card">
+<b>Context Menus</b><br>
+Used to enable right-click actions such as “Ask AI about selected text”.
+</div>
+
+<h2>Integrations</h2>
+
+<div class="card">
+Folio includes optional integrations that only run when explicitly enabled by the user.
+</div>
+
+<div class="card">
+<b>Todoist Integration</b><br>
+When enabled, Folio loads a Todoist ICS feed provided by the user.
+<ul>
+  <li>The ICS URL is stored locally in your browser.</li>
+  <li>No Todoist account data is stored by Folio.</li>
+  <li>Requests are made directly from your browser to show the tasks from the Todoist ICS feed.</li>
+  <li>No personal data is included in any requests to todoist, except the ICS link provided by the user.</li>
+  <li>Any data handling beyond Folio is governed by Todoist’s privacy policy</li>
+</ul>
+</div>
+
+<div class="card">
+<b>Weather Integration</b><br>
+When enabled, Folio fetches weather data from Open-Meteo.
+<ul>
+  <li>Uses browser geolocation if permitted by the user</li>
+  <li>Requests are only sent to Open-Meteo if the user has enabled the weather integration.</li>
+  <li>Requests go directly to Open-Meteo API</li>
+  <li>Your anonymous IP address is used by Open-Meteo to return accurate weather information.</li>
+  <li>Any data handling is governed by Open-Meteo’s privacy policy</li>
+</ul>
+</div>
+
+<h2>AI Services</h2>
+<div class="card">
+When you use AI search features, your query is sent directly from your browser to the selected AI provider.
+
+Supported providers may include ChatGPT, Claude, Grok, Perplexity, Mistral, and Microsoft Copilot.
+
+<ul>
+  <li>Folio does not store or intercept prompts</li>
+  <li>Requests are not processed by Folio servers (none exist)</li>
+  <li>Each provider’s privacy policy applies</li>
+</ul>
+</div>
+
+<h2>Third-Party Services</h2>
+<div class="card">
+Folio may send requests to external services only when you explicitly use features that require them (AI providers, weather API, Todoist feed).
+
+No background tracking or silent data transmission occurs.
+</div>
+
+<h2>Contact</h2>
+<div class="card">
+For questions about this privacy policy, refer to the extension listing or project page where this extension is distributed.
+</div>
+
+</div>
+</body>
+</html>

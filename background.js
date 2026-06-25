@@ -111,3 +111,25 @@ chrome.contextMenus.onClicked.addListener((info) => {
     chrome.tabs.create({ url });
   });
 });
+
+
+
+
+
+
+
+
+
+// Get recent history
+chrome.runtime.onMessage.addListener((req, sender, sendResponse) => {
+  if (req.action === "getHistory") {
+    chrome.history.search({ text: '', maxResults: 20, startTime: 0 }, sendResponse);
+    return true;
+  }
+});
+
+
+
+
+
+

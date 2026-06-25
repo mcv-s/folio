@@ -1,3 +1,9 @@
+
+console.log("chrome.history:", !!chrome?.history);
+
+
+
+
 function setFavicon() {
   const isDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
 
@@ -469,6 +475,91 @@ if (!showSearchBar && searchBar && aiSelectorItem )  {
 
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+// ===== HISTORY PANEL VISIBILITY =====
+function updateHistoryVisibility() {
+  const historyPanel = document.getElementById("historyPanel");
+
+  if (!historyPanel) return;
+
+  chrome.storage.local.get("showHistory", (data) => {
+    const enabled = data.showHistory === true;
+
+    historyPanel.classList.toggle("hidden", !enabled);
+  });
+}
+
+// run on load
+window.addEventListener("load", updateHistoryVisibility);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+function getDomain(url) {
+  try {
+    return new URL(url).hostname.replace("www.", "");
+  } catch {
+    return url;
+  }
+}
+
+function loadHistory() {
+  const el = document.getElementById("historyList");
+  if (!el) return;
+
+  chrome.runtime.sendMessage({action:"getHistory"}, (results=[]) => {
+    el.innerHTML = "";
+
+    if (results.length === 0) {
+      el.innerHTML = `<div class="history-item"><div class="history-icon"></div><div class="history-text">No recent activity</div></div>`;
+      return;
+    }
+
+    results.forEach(item => {
+      const domain = getDomain(item.url);
+      const iconUrl = `https://www.google.com/s2/favicons?sz=32&domain=${domain}`;
+
+      const div = document.createElement("div");
+      div.className = "history-item";
+      div.innerHTML = `
+        <div class="history-icon" style="background-image: url('https://www.google.com/s2/favicons?sz=32&domain=${domain}')"></div>
+        <div class="history-text">${domain}</div>
+      `;
+      div.onclick = () => location.href = item.url;
+      el.appendChild(div);
+    });
+  });
+}
+
+window.addEventListener("load", () => setTimeout(loadHistory, 300));
 
 
 

@@ -380,7 +380,7 @@ async function loadWeatherWidget() {
 
     if (!weather || !weather.enabled) return;
 
-    const box = createWidget("weather-widget", "Weather");
+    const box = createWidget("weather-widget", "Weather (From Open-Meteo)");
     box.innerHTML = `<div style="opacity:0.6;">Loading weather...</div>`;
 
     const unit =
