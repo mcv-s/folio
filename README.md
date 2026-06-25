@@ -14,7 +14,9 @@ Random backgrounds
 Widgets/Integrations
 
 
-. . . and a lot of simplicity, because most new tabs just have too much.
+. . . and a lot of simplicity, because most new tabs just have too much. <br><br>
+
+Here's our privacy policy: https://mcv-s.github.io/folio/privacy.html
 
 
 
@@ -22,7 +24,6 @@ Widgets/Integrations
 
 
 To download and/or use, you can go to https://github.com/mcv-s/Folio/archive/refs/heads/main.zip
-
 Unzip the extension, then go to your extensions page and click Load Unpacked:
 
 
@@ -32,5 +33,9 @@ Unzip the extension, then go to your extensions page and click Load Unpacked:
 
 
 Then select the extension and it works!
+
+
+
+
 
 Or, you could help improve the extension itself here on Gitub.
