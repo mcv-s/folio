@@ -633,6 +633,7 @@ canvas {
   height: 100vh;
   pointer-events: none;
   z-index: 115;
+  opacity: 0.4;
 }
 
 #widgetAnchorLines line {

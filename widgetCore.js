@@ -239,25 +239,70 @@ function anchorForSegment(segment) {
   ][segment] || { x: 0, y: 0 };
 }
 
+
+
 function updateAnchorLines(anchor) {
   if (!lastDraggedWidget) return;
+
   let svg = document.getElementById("widgetAnchorLines");
+
   if (!svg) {
     svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.id = "widgetAnchorLines";
     svg.setAttribute("aria-hidden", "true");
-    document.body.appendChild(svg);
+
+    const widgetLayer = document.getElementById("widgetLayer");
+
+    if (widgetLayer) {
+      widgetLayer.parentNode.insertBefore(svg, widgetLayer);
+    } else {
+      document.body.appendChild(svg);
+    }
   }
+
   const rect = lastDraggedWidget.getBoundingClientRect();
   const x = rect.left + rect.width / 2;
   const y = rect.top + rect.height / 2;
+
   const lines = [];
-  if (anchor.y < 0) lines.push([x, 0, x, y]);
-  if (anchor.y > 0) lines.push([x, innerHeight, x, y]);
-  if (anchor.x < 0) lines.push([0, y, x, y]);
-  if (anchor.x > 0) lines.push([innerWidth, y, x, y]);
-  svg.innerHTML = lines.map(([x1, y1, x2, y2]) => `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`).join("");
+
+  const anchorX = anchor?.x ?? 0;
+  const anchorY = anchor?.y ?? 0;
+
+  // Center anchor
+  if (anchorX === 0 && anchorY === 0) {
+    lines.push([
+      innerWidth / 2,
+      innerHeight / 2,
+      x,
+      y
+    ]);
+  } else {
+    if (anchorY < 0) lines.push([x, 0, x, y]);
+    if (anchorY > 0) lines.push([x, innerHeight, x, y]);
+    if (anchorX < 0) lines.push([0, y, x, y]);
+    if (anchorX > 0) lines.push([innerWidth, y, x, y]);
+
+    // Corner anchor
+    if (anchorX !== 0 && anchorY !== 0) {
+      const cornerX = anchorX < 0 ? 0 : innerWidth;
+      const cornerY = anchorY < 0 ? 0 : innerHeight;
+
+      lines.push([cornerX, cornerY, x, y]);
+    }
+  }
+
+  svg.innerHTML = lines
+    .map(
+      ([x1, y1, x2, y2]) =>
+        `<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" />`
+    )
+    .join("");
 }
+
+
+
+
 
 function createRadialMenu() {
   const menu = document.createElement("div");
@@ -368,7 +413,7 @@ function makeResizable(el) {
   window.addEventListener("mousemove", (e) => {
     if (!resizing) return;
 
-    
+
 
     const w = startW + (e.clientX - startX - 2);
     const h = startH + (e.clientY - startY - 2);
