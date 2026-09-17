@@ -2,11 +2,6 @@
 
 Find out about what was updated in the latest releases of Folio.
 
-## Quick Start Guide
-
-New to Folio?
-
-[Click here](#setup) to learn more about setting it up.
 
 ## Folio 3.0
 

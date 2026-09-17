@@ -23,8 +23,3 @@ Folio can be installed on Edge or Chrome, and potentially other Chromium-based b
 6. Select the unzipped Folio extension folder and you're ready to go!
 
 
-## Getting started
-
-Now that you have folio installed, we reccomend getting to know it a bit. 
-
-Explore the settings and enable different addons - and most importantly, customize your new tab page exactly how you want it!

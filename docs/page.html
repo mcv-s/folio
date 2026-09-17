@@ -130,11 +130,87 @@
         }
 
         .sidebar-link[data-level="2"] {
-            padding-left: 20px;
+            padding-left: 30px;
+        }
+
+
+        .sidebar-link[data-level="2"],
+        .sidebar-link[data-level="3"],
+        .sidebar-link[data-level="4"],
+        .sidebar-link[data-level="5"],
+        .sidebar-link[data-level="6"] {
+            position: relative;
+        }
+
+        .sidebar-link[data-level="2"]::before,
+        .sidebar-link[data-level="3"]::before,
+        .sidebar-link[data-level="4"]::before,
+        .sidebar-link[data-level="5"]::before,
+        .sidebar-link[data-level="6"]::before {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-left: 2px solid var(--border);
+            content: "";
+            opacity: 0;
+        }
+
+        .sidebar-link[data-level="2"]::after,
+        .sidebar-link[data-level="3"]::after,
+        .sidebar-link[data-level="4"]::after,
+        .sidebar-link[data-level="5"]::after,
+        .sidebar-link[data-level="6"]::after {
+            position: absolute;
+            top: 50%;
+            width: 7px;
+            border-top: 2px solid var(--border);
+            content: "";
+            opacity: 1;
+        }
+
+        .sidebar-link[data-level="2"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="3"]::before {
+            left: 15px;
+            width: 14px !important;
+        }
+
+        .sidebar-link[data-level="4"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="5"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="6"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="2"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="3"]::after {
+            left: 45px;
+        }
+
+        .sidebar-link[data-level="4"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="5"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="6"]::after {
+            left: 15px;
         }
 
         .sidebar-link[data-level="3"] {
-            padding-left: 30px;
+            padding-left: 60px;
             font-size: 13px;
         }
 
@@ -179,9 +255,11 @@
         }
 
         .markdown-content h1 {
-            margin-top: 0;
+            margin-top: 60px;
             margin-bottom: 8px;
             line-height: 1.25;
+            scroll-margin-top: 64px;
+
         }
 
         .markdown-content h2 {
@@ -191,16 +269,19 @@
             border-bottom: 1px solid var(--border);
 
             line-height: 1.3;
+            scroll-margin-top: 64px;
         }
 
         .markdown-content h3 {
             margin-top: 30px;
+            scroll-margin-top: 64px;
         }
 
         .markdown-content h4,
         .markdown-content h5,
         .markdown-content h6 {
             margin-top: 24px;
+            scroll-margin-top: 64px;
         }
 
         .markdown-content p {
@@ -441,7 +522,7 @@
         Folio
     </a>
 
-    <a class="home-button" href="#home">
+    <a class="home-button" href="./page.html">
         Home
     </a>
 
@@ -631,51 +712,6 @@
 
 
         /* =========================================================
-           Get Markdown filename from URL hash
-           ========================================================= */
-
-        function getMarkdownName() {
-
-            const hash =
-                window.location.hash
-                    .slice(1)
-                    .trim();
-
-
-            if (!hash) {
-                return null;
-            }
-
-
-            /*
-             * Only allow a simple filename.
-             *
-             * This means:
-             *
-             * #readit
-             *
-             * becomes:
-             *
-             * readit.md
-             */
-
-            const cleanName =
-                decodeURIComponent(hash)
-                    .replace(/\.md$/i, "")
-                    .replace(/[^a-zA-Z0-9_-]/g, "");
-
-
-            if (!cleanName) {
-                return null;
-            }
-
-
-            return cleanName + ".md";
-        }
-
-
-
-        /* =========================================================
            Create heading IDs
            ========================================================= */
 
@@ -797,16 +833,13 @@
                     "#" + id;
 
 
-                link.textContent =
-                    text;
+                link.textContent = text;
 
 
 
                 link.addEventListener(
                     "click",
                     (event) => {
-
-                        event.preventDefault();
 
                         const target =
                             document.getElementById(id);
@@ -830,8 +863,6 @@
 
             setupActiveHeadingTracking();
         }
-
-
 
         /* =========================================================
            Highlight current section
@@ -912,6 +943,21 @@
             );
         }
 
+        function scrollToHash(behavior = "auto") {
+            const hash = window.location.hash.slice(1);
+            if (!hash) {
+                return false;
+            }
+
+            const target = document.getElementById(decodeURIComponent(hash));
+            if (!target) {
+                return false;
+            }
+
+            target.scrollIntoView({ behavior, block: "start" });
+            return true;
+        }
+
 
 
         /* =========================================================
@@ -932,63 +978,30 @@
                 );
 
 
-            const filename =
-                getMarkdownName();
-
-
-            if (!filename) {
-
-                document.title =
-                    "Folio";
-
-
-                status.textContent =
-                    "No document specified.";
-
-
-                content.innerHTML =
-                    '<div class="error">' +
-                    'Add a document to the URL, for example ' +
-                    '<a href="#home"><code>page.html#home</code></a>.' +
-                    '</div>';
-
-                return;
-            }
-
-
-            status.textContent =
-                "Loading " + filename + "...";
+            status.textContent = "Loading documentation...";
 
 
             try {
 
-                /*
-                 * page.html is inside docs/,
-                 * so this resolves to:
-                 *
-                 * docs/readit.md
-                 */
-
-                const response =
-                    await fetch(
-                        new URL(
-                            filename,
-                            window.location.href
-                        )
-                    );
-
-
-                if (!response.ok) {
-
-                    throw new Error(
-                        `HTTP ${response.status}`
-                    );
-
+                const orderResponse = await fetch("./docs-order.json");
+                if (!orderResponse.ok) {
+                    throw new Error(`HTTP ${orderResponse.status} while loading docs-order.json`);
                 }
 
+                const filenames = await orderResponse.json();
+                if (!Array.isArray(filenames) || filenames.some(filename =>
+                    typeof filename !== "string" || !/^[a-zA-Z0-9_-]+\.md$/.test(filename)
+                )) {
+                    throw new Error("docs-order.json must contain an array of Markdown filenames.");
+                }
 
-                const markdown =
-                    await response.text();
+                const markdown = await Promise.all(filenames.map(async filename => {
+                    const response = await fetch(new URL(filename, window.location.href));
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} while loading ${filename}`);
+                    }
+                    return response.text();
+                }));
 
 
                 const marked =
@@ -1009,7 +1022,7 @@
 
 
                 content.innerHTML =
-                    marked.parse(markdown);
+                    marked.parse(markdown.join("\n\n"));
 
 
 
@@ -1156,12 +1169,7 @@
 
                 } else {
 
-                    document.title =
-                        "Folio: " +
-                        filename.replace(
-                            /\.md$/i,
-                            ""
-                        );
+                    document.title = "Folio Documentation";
 
                 }
 
@@ -1172,28 +1180,18 @@
                  * the Markdown has finished rendering.
                  */
 
-                const originalHash =
-                    window.location.hash;
+                if (window.location.hash) {
+                    // Images can change the layout after Markdown renders, so
+                    // restore the hash only after they have finished loading.
+                    const pendingImages = [...content.querySelectorAll("img")]
+                        .filter(image => !image.complete)
+                        .map(image => new Promise(resolve => {
+                            image.addEventListener("load", resolve, { once: true });
+                            image.addEventListener("error", resolve, { once: true });
+                        }));
 
-
-                if (originalHash) {
-
-                    requestAnimationFrame(() => {
-
-                        const target =
-                            document.getElementById(
-                                originalHash.slice(1)
-                            );
-
-
-                        if (target) {
-
-                            target.scrollIntoView();
-
-                        }
-
-                    });
-
+                    await Promise.all(pendingImages);
+                    requestAnimationFrame(() => scrollToHash("auto"));
                 }
 
             } catch (error) {
@@ -1212,9 +1210,7 @@
                     '<div class="error">' +
                     "<strong>Failed to load document.</strong>" +
                     "<br><br>" +
-                    "Could not load <code>" +
-                    filename +
-                    "</code>." +
+                    "Could not load the documentation files." +
                     "<br>" +
                     "<small>" +
                     error.message +
@@ -1225,47 +1221,35 @@
 
 
 
-        /* =========================================================
-           React to changing document hash
-           ========================================================= */
+        window.addEventListener("hashchange", () => {
+            scrollToHash("smooth");
+        });
 
-        window.addEventListener(
-            "hashchange",
-            () => {
+        const scrollPositionKey = "folio-docs-scroll-position";
+        let scrollUpdateTimer = null;
 
-                /*
-                 * A hash can either identify:
-                 *
-                 * #readit
-                 *
-                 * which means a Markdown file,
-                 *
-                 * OR an automatically generated
-                 * heading ID after the page loads.
-                 *
-                 * Only reload the Markdown document
-                 * when the hash does not point to an
-                 * existing heading.
-                 */
+        function updateHashFromScroll() {
+            const headings = [...document.querySelectorAll(
+                "#markdownContent h1, #markdownContent h2, #markdownContent h3, " +
+                "#markdownContent h4, #markdownContent h5, #markdownContent h6"
+            )];
+            const heading = headings
+                .filter(item => item.getBoundingClientRect().top <= 70)
+                .at(-1);
 
-                const hash =
-                    window.location.hash.slice(1);
-
-
-                const existingHeading =
-                    document.getElementById(hash);
-
-
-                if (existingHeading) {
-                    existingHeading.scrollIntoView();
-                    return;
-                }
-
-
-                loadPage();
-
+            if (heading && window.location.hash !== `#${heading.id}`) {
+                history.replaceState(null, "", `#${heading.id}`);
             }
-        );
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!window.location.hash) {
+                sessionStorage.setItem(scrollPositionKey, String(window.scrollY));
+            }
+
+            clearTimeout(scrollUpdateTimer);
+            scrollUpdateTimer = setTimeout(updateHashFromScroll, 5000);
+        }, { passive: true });
 
 
         /* =========================================================
@@ -1273,6 +1257,15 @@
            ========================================================= */
 
         loadPage();
+
+        window.addEventListener("load", () => {
+            if (!window.location.hash) {
+                const savedPosition = Number(sessionStorage.getItem(scrollPositionKey));
+                if (Number.isFinite(savedPosition) && savedPosition > 0) {
+                    window.scrollTo({ top: savedPosition, behavior: "auto" });
+                }
+            }
+        });
 
     </script>
 

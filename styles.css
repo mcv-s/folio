@@ -475,3 +475,156 @@ canvas {
   opacity: 1;
 }
 
+/* The radial affordance is only created by widgetCore on the new-tab page. */
+#widgetRadialMenu {
+  --radial-size: 184px;
+  position: fixed;
+  width: var(--radial-size);
+  height: var(--radial-size);
+  transform: translate(-50%, -50%) scale(.82);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 120;
+  transition: opacity .14s ease, transform .14s ease;
+}
+
+#widgetRadialMenu.visible {
+  opacity: 1;
+  transform: translate(-50%, -50%) scale(1);
+}
+
+#widgetRadialMenu::before,
+#widgetRadialMenu::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: rgba(33, 33, 33, .72);
+  backdrop-filter: blur(18px) saturate(130%);
+  -webkit-backdrop-filter: blur(18px) saturate(130%);
+  border: 1px solid rgba(255, 255, 255, .12);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, .28);
+}
+
+#widgetRadialMenu::after {
+  inset: 52px;
+  background: rgba(0, 0, 0, .18);
+  border-color: rgba(255, 255, 255, .08);
+  box-shadow: none;
+}
+
+#widgetRadialMenu svg {
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  overflow: visible;
+}
+
+#widgetRadialMenu [data-radial-segment] {
+  background: rgba(255, 255, 255, .08);
+  fill: rgba(255, 255, 255, .08);
+  stroke: rgba(255, 255, 255, .12);
+  stroke-width: 1;
+  transition: background .12s ease, filter .12s ease;
+}
+
+#widgetRadialMenu [data-radial-segment].active {
+  background: rgba(130, 190, 255, .42);
+  fill: rgba(130, 190, 255, .42);
+  stroke: rgba(180, 220, 255, .72);
+  filter: drop-shadow(0 0 8px rgba(130, 190, 255, .35));
+}
+
+#widgetRadialMenu [data-radial-center] {
+  position: absolute;
+  z-index: 2;
+  inset: 52px;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, .06);
+  border: 1px solid rgba(255, 255, 255, .1);
+  transition: background .12s ease, box-shadow .12s ease;
+}
+
+#widgetRadialMenu [data-radial-center].active {
+  background: rgba(130, 190, 255, .42);
+  border-color: rgba(180, 220, 255, .72);
+  box-shadow: 0 0 18px rgba(130, 190, 255, .35);
+}
+
+#widgetRadialTooltip {
+  position: fixed;
+  z-index: 125;
+  padding: 6px 9px;
+  border: 1px solid rgba(255, 255, 255, .12);
+  border-radius: 8px;
+  background: rgba(33, 33, 33, .72);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  box-shadow: 0 5px 18px rgba(0, 0, 0, .24);
+  color: rgba(255, 255, 255, .88);
+  font-size: 11px;
+  line-height: 1.2;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  opacity: 0;
+  transition: opacity .14s ease;
+}
+
+#widgetRadialTooltip.visible {
+  opacity: 1;
+}
+
+@media (prefers-color-scheme: light) {
+  #widgetRadialMenu::before,
+  #widgetRadialMenu::after {
+    background: rgba(248, 249, 252, .78);
+    border-color: rgba(30, 35, 50, .14);
+    box-shadow: 0 8px 30px rgba(30, 35, 50, .18);
+  }
+
+  #widgetRadialMenu::after {
+    background: rgba(225, 230, 240, .4);
+  }
+
+  #widgetRadialMenu [data-radial-segment] {
+    fill: rgba(30, 35, 50, .08);
+    stroke: rgba(30, 35, 50, .14);
+  }
+
+  #widgetRadialMenu [data-radial-segment].active,
+  #widgetRadialMenu [data-radial-center].active {
+    fill: rgba(45, 125, 230, .3);
+    background: rgba(45, 125, 230, .3);
+    stroke: rgba(35, 105, 205, .7);
+  }
+
+  #widgetRadialMenu [data-radial-center] {
+    background: rgba(30, 35, 50, .06);
+    border-color: rgba(30, 35, 50, .12);
+  }
+
+  #widgetRadialTooltip {
+    background: rgba(248, 249, 252, .78);
+    border-color: rgba(30, 35, 50, .14);
+    color: rgba(20, 25, 38, .86);
+    box-shadow: 0 5px 18px rgba(30, 35, 50, .18);
+  }
+}
+
+#widgetAnchorLines {
+  position: fixed;
+  inset: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 115;
+}
+
+#widgetAnchorLines line {
+  stroke: rgba(100, 180, 255, .72);
+  stroke-width: 2;
+  stroke-dasharray: 4 5;
+  filter: drop-shadow(0 0 4px rgba(80, 160, 255, .55));
+}
+

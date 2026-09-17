@@ -2,10 +2,6 @@
 
 > _Folio Quick Start Guide_
 
-Now that you've decided you'll install Folio, you'll want to install it to your browser to start using it.
-
-You can learn more about installation [here.](#setup)
-
 <br>
 
 Once Folio is installed on your device, your new tab will look something like this:
