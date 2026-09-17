@@ -4,5 +4,9 @@
     "iconColor": "#529daf",
     "deprecated": false,
     "state": "active",
+    "description": "A new tab extension",
+    "todoistData": [
+        "https://app.todoist.com/app/section/folio-development-6hWcqvgqj24fHVFX"
+    ],
     "tags": null
 }
