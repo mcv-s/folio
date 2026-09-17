@@ -543,6 +543,16 @@ canvas {
   background: rgba(255, 255, 255, .06);
   border: 1px solid rgba(255, 255, 255, .1);
   transition: background .12s ease, box-shadow .12s ease;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+#widgetRadialMenu [data-radial-center] .ph-anchor {
+  color: rgba(255, 255, 255, .72);
+  font-size: 22px;
+  line-height: 1;
+  pointer-events: none;
 }
 
 #widgetRadialMenu [data-radial-center].active {
@@ -602,6 +612,10 @@ canvas {
   #widgetRadialMenu [data-radial-center] {
     background: rgba(30, 35, 50, .06);
     border-color: rgba(30, 35, 50, .12);
+  }
+
+  #widgetRadialMenu [data-radial-center] .ph-anchor {
+    color: rgba(20, 25, 38, .64);
   }
 
   #widgetRadialTooltip {

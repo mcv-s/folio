@@ -21,8 +21,8 @@ Find out about what was updated in the latest releases of Folio.
 
 ## Folio 1.0
 
-Folio 1.0 was the first release. It was developed over time and included all the features now present but not listed in Folio 2.0.
+Folio 1.0 was the first release. It was developed over time and included all the features now present but not listed in newer versions.
 
 <br>
 
-We do not keep old versions of Folio available. To try out an older release of Folio, go to [our github.](https://github.com/mcv-s/folio/tree/main)
+We do not keep old versions of Folio available. To try out an older release of Folio, go to [our github](https://github.com/mcv-s/folio/tree/main) and you can try and download an older version manually.

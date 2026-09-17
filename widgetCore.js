@@ -288,6 +288,7 @@ function createRadialMenu() {
 
   const centerOption = document.createElement("div");
   centerOption.dataset.radialCenter = "true";
+  centerOption.innerHTML = '<i class="ph ph-anchor" aria-hidden="true"></i>';
   menu.appendChild(centerOption);
 
   document.body.appendChild(menu);
