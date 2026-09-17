@@ -1,0 +1,1274 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <link rel="icon" type="image/png" sizes="32x32" href="/icons/Folio-Icon-Main.png">
+    <link rel="shortcut icon" href="/icons/Folio-Icon-Main.png">
+
+    <script>
+        if (window.location.hostname === "mcv-s.github.io") {
+            document.querySelectorAll(
+                'link[rel="icon"], link[rel="shortcut icon"]'
+            ).forEach(link => {
+
+                const href = link.getAttribute("href");
+
+                if (
+                    href &&
+                    href.startsWith("/icons/")
+                ) {
+                    link.href =
+                        "/folio" + href;
+                }
+
+            });
+        }
+    </script>
+
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Folio</title>
+
+    <link rel="stylesheet" href="/styleVars.css">
+    <link rel="stylesheet" href="/folio/styleVars.css">
+
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            margin: 0;
+            font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+            background: var(--bg);
+            color: var(--text);
+            line-height: 1.6;
+        }
+
+        /* =========================================================
+       Layout
+       ========================================================= */
+
+        .layout {
+            display: flex;
+            min-height: 100vh;
+        }
+
+
+        /* =========================================================
+       Sidebar
+       ========================================================= */
+
+        .sidebar {
+            position: fixed;
+            top: 0;
+            left: 0;
+
+            width: 260px;
+            height: 100vh;
+
+            overflow-y: auto;
+
+            padding: 28px 16px;
+
+            background: var(--card);
+            border-right: 1px solid var(--border);
+        }
+
+        .sidebar-title {
+            font-size: 18px;
+            font-weight: 700;
+
+            padding: 0 10px;
+            margin-bottom: 18px;
+        }
+
+        .sidebar-nav {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+
+        .sidebar-link {
+            display: block;
+
+            color: var(--muted);
+            text-decoration: none;
+
+            padding: 6px 10px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+        .sidebar-link:hover {
+            background: var(--bg);
+            color: var(--text);
+        }
+
+        .sidebar-link.active {
+            background: var(--bg);
+            color: var(--accent);
+        }
+
+        /* Heading indentation */
+
+        .sidebar-link[data-level="1"] {
+            font-weight: 600;
+        }
+
+        .sidebar-link[data-level="2"] {
+            padding-left: 30px;
+        }
+
+
+        .sidebar-link[data-level="2"],
+        .sidebar-link[data-level="3"],
+        .sidebar-link[data-level="4"],
+        .sidebar-link[data-level="5"],
+        .sidebar-link[data-level="6"] {
+            position: relative;
+        }
+
+        .sidebar-link[data-level="2"]::before,
+        .sidebar-link[data-level="3"]::before,
+        .sidebar-link[data-level="4"]::before,
+        .sidebar-link[data-level="5"]::before,
+        .sidebar-link[data-level="6"]::before {
+            position: absolute;
+            top: 0;
+            height: 100%;
+            border-left: 2px solid var(--border);
+            content: "";
+            opacity: 0;
+        }
+
+        .sidebar-link[data-level="2"]::after,
+        .sidebar-link[data-level="3"]::after,
+        .sidebar-link[data-level="4"]::after,
+        .sidebar-link[data-level="5"]::after,
+        .sidebar-link[data-level="6"]::after {
+            position: absolute;
+            top: 50%;
+            width: 7px;
+            border-top: 2px solid var(--border);
+            content: "";
+            opacity: 1;
+        }
+
+        .sidebar-link[data-level="2"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="3"]::before {
+            left: 15px;
+            width: 14px !important;
+        }
+
+        .sidebar-link[data-level="4"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="5"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="6"]::before {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="2"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="3"]::after {
+            left: 45px;
+        }
+
+        .sidebar-link[data-level="4"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="5"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="6"]::after {
+            left: 15px;
+        }
+
+        .sidebar-link[data-level="3"] {
+            padding-left: 60px;
+            font-size: 13px;
+        }
+
+        .sidebar-link[data-level="4"] {
+            padding-left: 40px;
+            font-size: 13px;
+        }
+
+        .sidebar-link[data-level="5"] {
+            padding-left: 50px;
+            font-size: 13px;
+        }
+
+        .sidebar-link[data-level="6"] {
+            padding-left: 60px;
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+       Main content
+       ========================================================= */
+
+        .content-wrapper {
+            width: 100%;
+            margin-left: 200px;
+        }
+
+        .container {
+            width: min(100%, 850px);
+            margin: 0 auto;
+            padding: 50px 30px 100px;
+        }
+
+
+        /* =========================================================
+       Markdown
+       ========================================================= */
+
+        .markdown-content {
+            width: 100%;
+        }
+
+        .markdown-content h1 {
+            margin-top: 60px;
+            margin-bottom: 8px;
+            line-height: 1.25;
+            scroll-margin-top: 64px;
+
+        }
+
+        .markdown-content h2 {
+            margin-top: 42px;
+            padding-bottom: 7px;
+
+            border-bottom: 1px solid var(--border);
+
+            line-height: 1.3;
+            scroll-margin-top: 64px;
+        }
+
+        .markdown-content h3 {
+            margin-top: 30px;
+            scroll-margin-top: 64px;
+        }
+
+        .markdown-content h4,
+        .markdown-content h5,
+        .markdown-content h6 {
+            margin-top: 24px;
+            scroll-margin-top: 64px;
+        }
+
+        .markdown-content p {
+            margin: 12px 0;
+        }
+
+        .markdown-content a {
+            color: var(--accent);
+        }
+
+        .markdown-content img {
+            max-width: 100%;
+            height: auto;
+        }
+
+        .markdown-content blockquote {
+            margin: 18px 0;
+            padding: 10px 16px;
+
+            border-left: 4px solid var(--accent);
+
+            background: var(--card);
+            color: var(--muted);
+        }
+
+        .markdown-content code {
+            padding: 2px 5px;
+            border-radius: 5px;
+
+            background: var(--card);
+
+            font-family:
+                ui-monospace,
+                SFMono-Regular,
+                Consolas,
+                monospace;
+        }
+
+        .markdown-content pre {
+            overflow-x: auto;
+
+            padding: 14px;
+
+            border-radius: 10px;
+
+            background: var(--card);
+            border: 1px solid var(--border);
+        }
+
+        .markdown-content pre code {
+            padding: 0;
+            background: transparent;
+        }
+
+        .markdown-content table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+
+        .markdown-content th,
+        .markdown-content td {
+            padding: 8px 10px;
+
+            border: 1px solid var(--border);
+
+            text-align: left;
+        }
+
+        .markdown-content th {
+            background: var(--card);
+        }
+
+        .markdown-content hr {
+            border: none;
+            border-top: 1px solid var(--border);
+            margin: 30px 0;
+        }
+
+
+
+
+
+        .markdown-content h1 {
+            margin-top: 20;
+            margin-bottom: 16px;
+            padding-bottom: 10px;
+            padding-top: 50px;
+            border-bottom: 1px solid var(--border);
+            line-height: 1.25;
+        }
+
+        .markdown-content h2 {
+            margin-top: 42px;
+            margin-bottom: 16px;
+            padding-bottom: 8px;
+            border-bottom: 1px solid var(--border);
+            line-height: 1.3;
+        }
+
+
+
+
+        /* =========================================================
+       Loading / errors
+       ========================================================= */
+
+        .status {
+            padding: 30px 0;
+
+            color: var(--muted);
+        }
+
+        .error {
+            padding: 18px;
+
+            border: 1px solid var(--border);
+            border-radius: 10px;
+
+            background: var(--card);
+        }
+
+
+        /* =========================================================
+       Mobile
+       ========================================================= */
+
+        @media (max-width: 800px) {
+
+            .sidebar {
+                position: static;
+
+                width: 100%;
+                height: auto;
+
+                max-height: 260px;
+
+                border-right: none;
+                border-bottom: 1px solid var(--border);
+            }
+
+            .layout {
+                display: block;
+            }
+
+            .content-wrapper {
+                margin-left: 0;
+            }
+
+            .container {
+                padding: 30px 20px 80px;
+            }
+        }
+
+
+
+
+
+        #markdownContent {
+            margin-top: 10px;
+        }
+
+
+
+
+
+
+
+
+
+
+
+        /* =========================================================
+   Top Bar
+   ========================================================= */
+
+        .topbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+
+            height: 54px;
+
+            display: flex;
+            align-items: center;
+
+            padding: 0 18px;
+
+            background: var(--card);
+            border-bottom: 1px solid var(--border);
+
+            z-index: 1000;
+        }
+
+        .home-button {
+            color: var(--text);
+            text-decoration: none;
+
+            padding: 6px 12px;
+
+            border-radius: 7px;
+
+            font-size: 14px;
+            font-weight: 600;
+
+            transition:
+                background 0.15s ease,
+                color 0.15s ease;
+        }
+
+        .home-button:hover {
+            background: var(--bg);
+            color: var(--accent);
+        }
+
+        .document-title {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+
+            font-size: 15px;
+            font-weight: 600;
+
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+
+            max-width: 60%;
+        }
+    </style>
+</head>
+
+
+
+<header class="topbar">
+    <a class="home-button" href="https://mcv-s.github.io/folio/">
+        Folio
+    </a>
+
+    <a class="home-button" href="./page.html">
+        Home
+    </a>
+
+    <div id="documentTitle" class="document-title">
+        Folio Documentation
+    </div>
+</header>
+
+
+
+
+
+<body>
+
+    <div class="layout">
+
+        <aside class="sidebar">
+            <div class="sidebar-title">
+                Folio
+            </div>
+
+            <nav id="sidebarNav" class="sidebar-nav" aria-label="Page sections">
+            </nav>
+        </aside>
+
+
+        <main class="content-wrapper">
+
+            <div class="container">
+
+                <div id="status" class="status">
+                    Loading...
+                </div>
+
+                <article id="markdownContent" class="markdown-content">
+                </article>
+
+            </div>
+
+        </main>
+
+    </div>
+
+
+    <script type="module">
+
+
+
+        /* =========================================================
+           Calculate Documentation Link
+           ========================================================= */
+
+        function calculateLink(hash) {
+
+            const url =
+                new URL(
+                    window.location.href
+                );
+
+            url.hash =
+                hash.startsWith("#")
+                    ? hash
+                    : "#" + hash;
+
+            return url.href;
+        }
+
+        /* =========================================================
+           Load Marked
+           ========================================================= */
+
+        let markedPromise = null;
+
+
+        function loadMarked() {
+
+            if (window.marked) {
+                return Promise.resolve(window.marked);
+            }
+
+
+            if (markedPromise) {
+                return markedPromise;
+            }
+
+
+            markedPromise = new Promise((resolve, reject) => {
+
+                const existing =
+                    document.querySelector(
+                        'script[data-markdown="marked"]'
+                    );
+
+
+                if (existing) {
+
+                    if (window.marked) {
+                        resolve(window.marked);
+                        return;
+                    }
+
+
+                    existing.addEventListener(
+                        "load",
+                        () => {
+
+                            if (window.marked) {
+                                resolve(window.marked);
+                            } else {
+                                reject(
+                                    new Error(
+                                        "Marked loaded but was not available."
+                                    )
+                                );
+                            }
+
+                        }
+                    );
+
+
+                    existing.addEventListener(
+                        "error",
+                        () => {
+                            reject(
+                                new Error(
+                                    "Failed to load Marked."
+                                )
+                            );
+                        }
+                    );
+
+                    return;
+                }
+
+
+                const script =
+                    document.createElement("script");
+
+
+                script.src =
+                    new URL(
+                        "../modules/marked_1.js",
+                        import.meta.url
+                    ).href;
+
+
+                script.dataset.markdown =
+                    "marked";
+
+
+                script.onload = () => {
+
+                    if (!window.marked) {
+
+                        reject(
+                            new Error(
+                                "Marked loaded but was not available."
+                            )
+                        );
+
+                        return;
+                    }
+
+                    resolve(window.marked);
+                };
+
+
+                script.onerror = () => {
+
+                    reject(
+                        new Error(
+                            "Failed to load Marked."
+                        )
+                    );
+
+                };
+
+
+                document.head.appendChild(script);
+
+            });
+
+
+            return markedPromise;
+        }
+
+
+
+        /* =========================================================
+           Create heading IDs
+           ========================================================= */
+
+        function createHeadingId(text, usedIds) {
+
+            let id =
+                text
+                    .toLowerCase()
+                    .trim()
+                    .replace(/[^\w\s-]/g, "")
+                    .replace(/\s+/g, "-");
+
+
+            if (!id) {
+                id = "section";
+            }
+
+
+            const originalId = id;
+
+            let number = 2;
+
+
+            while (usedIds.has(id)) {
+
+                id =
+                    originalId +
+                    "-" +
+                    number;
+
+                number++;
+            }
+
+
+            usedIds.add(id);
+
+            return id;
+        }
+
+
+
+        /* =========================================================
+           Build Sidebar
+           ========================================================= */
+
+        function buildSidebar() {
+
+            const content =
+                document.getElementById(
+                    "markdownContent"
+                );
+
+
+            const sidebar =
+                document.getElementById(
+                    "sidebarNav"
+                );
+
+
+            sidebar.innerHTML = "";
+
+
+            const headings =
+                content.querySelectorAll(
+                    "h1, h2, h3, h4, h5, h6"
+                );
+
+
+            if (!headings.length) {
+
+                sidebar.innerHTML =
+                    '<div style="padding: 0 10px; opacity: .5;">' +
+                    "No sections" +
+                    "</div>";
+
+                return;
+            }
+
+
+            const usedIds =
+                new Set();
+
+
+            headings.forEach((heading) => {
+
+                const level =
+                    Number(
+                        heading.tagName.substring(1)
+                    );
+
+
+                const text =
+                    heading.textContent.trim();
+
+
+                const id =
+                    createHeadingId(
+                        text,
+                        usedIds
+                    );
+
+
+                heading.id = id;
+
+
+                const link =
+                    document.createElement("a");
+
+
+                link.className =
+                    "sidebar-link";
+
+
+                link.dataset.level =
+                    level;
+
+
+                link.href =
+                    "#" + id;
+
+
+                link.textContent = text;
+
+
+
+                link.addEventListener(
+                    "click",
+                    (event) => {
+
+                        const target =
+                            document.getElementById(id);
+
+                        if (!target) {
+                            return;
+                        }
+
+                        target.scrollIntoView({
+                            behavior: "smooth",
+                            block: "start"
+                        });
+
+                    }
+                );
+
+                sidebar.appendChild(link);
+
+            });
+
+
+            setupActiveHeadingTracking();
+        }
+
+        /* =========================================================
+           Highlight current section
+           ========================================================= */
+
+        function setupActiveHeadingTracking() {
+
+            const headings =
+                document.querySelectorAll(
+                    "#markdownContent h1, " +
+                    "#markdownContent h2, " +
+                    "#markdownContent h3, " +
+                    "#markdownContent h4, " +
+                    "#markdownContent h5, " +
+                    "#markdownContent h6"
+                );
+
+
+            const links =
+                document.querySelectorAll(
+                    ".sidebar-link"
+                );
+
+
+            if (!headings.length) {
+                return;
+            }
+
+
+            const observer =
+                new IntersectionObserver(
+                    (entries) => {
+
+                        const visible =
+                            entries
+                                .filter(
+                                    entry =>
+                                        entry.isIntersecting
+                                )
+                                .sort(
+                                    (a, b) =>
+                                        a.boundingClientRect.top -
+                                        b.boundingClientRect.top
+                                );
+
+
+                        if (!visible.length) {
+                            return;
+                        }
+
+
+                        const activeId =
+                            visible[0].target.id;
+
+
+                        links.forEach(link => {
+
+                            link.classList.toggle(
+                                "active",
+                                link.getAttribute("href") ===
+                                "#" + activeId
+                            );
+
+                        });
+
+                    },
+                    {
+                        rootMargin:
+                            "-100px 0px -65% 0px",
+                        threshold: 0
+                    }
+                );
+
+
+            headings.forEach(
+                heading =>
+                    observer.observe(heading)
+            );
+        }
+
+        function scrollToHash(behavior = "auto") {
+            const hash = window.location.hash.slice(1);
+            if (!hash) {
+                return false;
+            }
+
+            const target = document.getElementById(decodeURIComponent(hash));
+            if (!target) {
+                return false;
+            }
+
+            target.scrollIntoView({ behavior, block: "start" });
+            return true;
+        }
+
+
+
+        /* =========================================================
+           Load and render Markdown
+           ========================================================= */
+
+        async function loadPage() {
+
+            const status =
+                document.getElementById(
+                    "status"
+                );
+
+
+            const content =
+                document.getElementById(
+                    "markdownContent"
+                );
+
+
+            status.textContent = "Loading documentation...";
+
+
+            try {
+
+                const orderResponse = await fetch("./docs-order.json");
+                if (!orderResponse.ok) {
+                    throw new Error(`HTTP ${orderResponse.status} while loading docs-order.json`);
+                }
+
+                const filenames = await orderResponse.json();
+                if (!Array.isArray(filenames) || filenames.some(filename =>
+                    typeof filename !== "string" || !/^[a-zA-Z0-9_-]+\.md$/.test(filename)
+                )) {
+                    throw new Error("docs-order.json must contain an array of Markdown filenames.");
+                }
+
+                const markdown = await Promise.all(filenames.map(async filename => {
+                    const response = await fetch(new URL(filename, window.location.href));
+                    if (!response.ok) {
+                        throw new Error(`HTTP ${response.status} while loading ${filename}`);
+                    }
+                    return response.text();
+                }));
+
+
+                const marked =
+                    await loadMarked();
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                content.innerHTML =
+                    marked.parse(markdown.join("\n\n"));
+
+
+
+
+
+
+                /* =========================================================
+                   Fix Markdown Image Paths
+                   ========================================================= */
+
+                const images = content.querySelectorAll("img");
+
+                images.forEach(image => {
+
+                    const src = image.getAttribute("src");
+
+                    if (!src) {
+                        return;
+                    }
+
+                    /*
+                     * Only adjust image paths when running on:
+                     *
+                     * mcv-s.github.io
+                     *
+                     * /Images/xyz.png
+                     *
+                     * becomes:
+                     *
+                     * /folio/Images/xyz.png
+                     */
+
+                    if (
+                        window.location.hostname === "mcv-s.github.io" &&
+                        src.startsWith("/Images/")
+                    ) {
+                        image.src = "/folio" + src;
+                    }
+
+                });
+
+
+
+
+
+
+                /* =========================================================
+                Fix Markdown Links
+                ========================================================= */
+
+                const links =
+                    content.querySelectorAll("a");
+
+                links.forEach(link => {
+
+                    const href =
+                        link.getAttribute("href");
+
+                    if (!href) {
+                        return;
+                    }
+
+
+                    /*
+                     * Documentation links such as:
+                     *
+                     * [Read It](#readit)
+                     *
+                     * become the full documentation URL.
+                     */
+
+                    if (href.startsWith("#")) {
+
+                        link.href =
+                            calculateLink(href);
+
+                        return;
+                    }
+
+
+                    /*
+                     * Also support:
+                     *
+                     * [Read It](readit)
+                     *
+                     * [Read It](readit.md)
+                     *
+                     */
+
+                    if (
+                        !href.includes("://") &&
+                        !href.startsWith("/") &&
+                        !href.startsWith("mailto:")
+                    ) {
+
+                        const cleanHref =
+                            href
+                                .replace(/\.md$/i, "")
+                                .replace(/^\.?\//, "");
+
+                        link.href =
+                            calculateLink("#" + cleanHref);
+
+                    }
+
+                });
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+                buildSidebar();
+
+
+                status.style.display =
+                    "none";
+
+
+                /*
+                 * Use the first H1 as the page title
+                 * when available.
+                 */
+
+                const firstHeading =
+                    content.querySelector("h1");
+
+
+                if (firstHeading) {
+
+                    document.title =
+                        "Folio: " +
+                        firstHeading.textContent.trim();
+
+                } else {
+
+                    document.title = "Folio Documentation";
+
+                }
+
+
+                /*
+                 * If the URL contained an existing
+                 * section anchor, jump to it after
+                 * the Markdown has finished rendering.
+                 */
+
+                if (window.location.hash) {
+                    // Images can change the layout after Markdown renders, so
+                    // restore the hash only after they have finished loading.
+                    const pendingImages = [...content.querySelectorAll("img")]
+                        .filter(image => !image.complete)
+                        .map(image => new Promise(resolve => {
+                            image.addEventListener("load", resolve, { once: true });
+                            image.addEventListener("error", resolve, { once: true });
+                        }));
+
+                    await Promise.all(pendingImages);
+                    requestAnimationFrame(() => scrollToHash("auto"));
+                }
+
+            } catch (error) {
+
+                console.error(
+                    "Failed to load Markdown:",
+                    error
+                );
+
+
+                status.style.display =
+                    "none";
+
+
+                content.innerHTML =
+                    '<div class="error">' +
+                    "<strong>Failed to load document.</strong>" +
+                    "<br><br>" +
+                    "Could not load the documentation files." +
+                    "<br>" +
+                    "<small>" +
+                    error.message +
+                    "</small>" +
+                    "</div>";
+            }
+        }
+
+
+
+        window.addEventListener("hashchange", () => {
+            scrollToHash("smooth");
+        });
+
+        const scrollPositionKey = "folio-docs-scroll-position";
+        let scrollUpdateTimer = null;
+
+        function updateHashFromScroll() {
+            const headings = [...document.querySelectorAll(
+                "#markdownContent h1, #markdownContent h2, #markdownContent h3, " +
+                "#markdownContent h4, #markdownContent h5, #markdownContent h6"
+            )];
+            const heading = headings
+                .filter(item => item.getBoundingClientRect().top <= 70)
+                .at(-1);
+
+            if (heading && window.location.hash !== `#${heading.id}`) {
+                history.replaceState(null, "", `#${heading.id}`);
+            }
+        }
+
+        window.addEventListener("scroll", () => {
+            if (!window.location.hash) {
+                sessionStorage.setItem(scrollPositionKey, String(window.scrollY));
+            }
+
+            clearTimeout(scrollUpdateTimer);
+            scrollUpdateTimer = setTimeout(updateHashFromScroll, 5000);
+        }, { passive: true });
+
+
+        /* =========================================================
+           Start
+           ========================================================= */
+
+        loadPage();
+
+        window.addEventListener("load", () => {
+            if (!window.location.hash) {
+                const savedPosition = Number(sessionStorage.getItem(scrollPositionKey));
+                if (Number.isFinite(savedPosition) && savedPosition > 0) {
+                    window.scrollTo({ top: savedPosition, behavior: "auto" });
+                }
+            }
+        });
+
+    </script>
+
+</body>
+
+</html>
