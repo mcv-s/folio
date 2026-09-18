@@ -38,10 +38,48 @@
         },
         {
           "key": "none",
-          "label": "Get my iCal link",
+          "label": "Get your iCal link",
           "type": "link",
           "value": "https://app.todoist.com/app/settings/integrations/installed",
           "default": false
+        }
+      ]
+    },
+    {
+      "key": "github-notifs",
+      "title": "Github Notifications",
+      "settings": [
+        {
+          "key": "enabled",
+          "label": "Enable github notifications widget",
+          "type": "toggle",
+          "default": false
+        },
+        {
+          "key": "apiKey",
+          "label": "",
+          "type": "text",
+          "placeholder": "Your Github API Key",
+          "default": ""
+        },
+        {
+          "key": "displayArray",
+          "label": "Display an array of notifications instead of a number",
+          "type": "toggle",
+          "default": false
+        },
+        {
+          "key": "hideIfZero",
+          "label": "Hide the widget if the user has no messages.",
+          "type": "toggle",
+          "default": false
+        },
+        {
+          "key": "none",
+          "label": "Personal Access Tokens > Generate New Token (Classic)",
+          "type": "link",
+          "value": "https://github.com/settings/tokens",
+          "default": ""
         }
       ]
     },
