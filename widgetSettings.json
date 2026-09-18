@@ -248,6 +248,18 @@
           "default": ""
         }
       ]
+    },
+    {
+      "key": "tab-parking",
+      "title": "Tab Parking",
+      "settings": [
+        {
+          "key": "enabled",
+          "label": "Enable a widget for sites to be saved for later",
+          "type": "toggle",
+          "default": false
+        }
+      ]
     }
   ]
 }
