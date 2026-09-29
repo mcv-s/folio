@@ -22,6 +22,8 @@
     }
   }
 
+
+  
   function serializeValue(value) {
     return JSON.stringify(value);
   }

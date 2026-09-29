@@ -109,6 +109,31 @@
       ]
     },
     {
+      "key": "crypto-counter",
+      "title": "Crypto Counter",
+      "settings": [
+        {
+          "key": "enabled",
+          "label": "Enable cryptocurrency value counters",
+          "type": "toggle",
+          "default": false
+        },
+        {
+          "key": "trackedCryptos",
+          "label": "",
+          "type": "textarea",
+          "placeholder": "Cryptocurrencies to track (one per line)",
+          "default": "bitcoin"
+        },
+        {
+          "key": "listDisplay",
+          "label": "Display the values in a list?",
+          "type": "toggle",
+          "default": false
+        }
+      ]
+    },
+    {
       "key": "calendar",
       "title": "Calendar",
       "settings": [
